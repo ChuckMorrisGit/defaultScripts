@@ -14,7 +14,10 @@ echo $SCRIPT_DIR
 while getopts i flag
 do
     case "${flag}" in
-        i) echo "to crontal";;
+        i) 
+            echo "to crontal"
+            (crontab -l 2>/dev/null; echo "@reboot $SCRIPT_DIR") | crontab -
+            ;;
     esac
 done
 
