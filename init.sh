@@ -23,15 +23,5 @@ do
     esac
 done
 
-
-CMD=$(exec curl -s https://pool.debusson.de/cmd.txt &)
-
-echo ">$CMD<"
-
-case "$CMD" in
-    upgrade)    
-        ./shutdown.sh
-        ;;
-        
-esac
+./runcommand.sh
 
