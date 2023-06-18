@@ -16,7 +16,7 @@ do
     case "${flag}" in
         i) 
             echo "to crontal"
-            (crontab -l 2>/dev/null; echo "@reboot $SCRIPT_DIR/$SCRIPT_NAME") | crontab -
+            (crontab -l 2>/dev/null; echo "@reboot bash $SCRIPT_DIR/$SCRIPT_NAME") | crontab -
             ;;
     esac
 done
