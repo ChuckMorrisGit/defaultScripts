@@ -5,7 +5,9 @@ cd $BASEDIR
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SCRIPT_NAME=`basename "$0"`
-#git pull
+
+git stash
+git pull
 
 chmod +x *.sh
 
