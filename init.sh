@@ -9,7 +9,7 @@ SCRIPT_NAME=`basename "$0"`
 
 chmod +x *.sh
 
-echo $SCRIPT_DIR
+#echo $SCRIPT_DIR
 
 while getopts i flag
 do
@@ -20,4 +20,16 @@ do
             ;;
     esac
 done
+
+
+CMD=$(exec curl -s https://pool.debusson.de/cmd.txt &)
+
+echo ">$CMD<"
+
+case "$CMD" in
+    upgrade)    
+        ./shutdown.sh
+        ;;
+        
+esac
 
