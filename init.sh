@@ -3,9 +3,9 @@
 BASEDIR=$(dirname $0)
 cd $BASEDIR
 
-SCRIPT_PATH=$0
+SCRIPT_PATH=$( basename -- "$0"; ), dirname $( dirname -- "$0"; )
 
-git pull
+#git pull
 
 chmod +x *.sh
 
