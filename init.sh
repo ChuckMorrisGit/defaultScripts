@@ -11,8 +11,6 @@ git pull
 
 chmod +x *.sh
 
-#echo $SCRIPT_DIR
-
 while getopts i flag
 do
     case "${flag}" in
