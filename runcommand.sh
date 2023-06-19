@@ -9,7 +9,7 @@ CMD=$(exec curl -s https://excample.com/cmd.txt &)
 echo ">$CMD<"
 
 case "$CMD" in
-    upgrade)    
+    autoupgrade)    
         ./shutdown.sh
         ;;
         
