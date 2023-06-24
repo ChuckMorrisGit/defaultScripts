@@ -1,4 +1,4 @@
-# defaultScritps
+# defaultScripts
 
 just a view scripts to make the life easier.
 
