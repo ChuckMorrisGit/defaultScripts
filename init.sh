@@ -9,7 +9,8 @@ SCRIPT_NAME=`basename "$0"`
 git stash
 git pull
 
-chmod -R +x *.sh
+chmod +x *.sh
+chmod +x ./helper/*.sh
 
 while getopts i flag
 do
