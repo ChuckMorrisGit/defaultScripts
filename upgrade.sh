@@ -1,5 +1,26 @@
 #!/bin/bash
 
-sudo apt update
-sudo apt -y upgrade
-sudo apt -y autoremove
+BASEDIR=$(dirname $0)
+cd $BASEDIR
+
+id=`./getID.sh`
+
+case "$id" in
+
+    opensuse)
+        zypper up
+        ;;
+
+    fedora)
+        dnf upgrade --refresh
+        ;;
+
+    *)
+        sudo apt update
+        sudo apt -y upgrade
+        sudo apt -y autoremove
+        ;;
+
+esac
+  
+
