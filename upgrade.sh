@@ -3,7 +3,7 @@
 BASEDIR=$(dirname $0)
 cd $BASEDIR
 
-id=`./getID.sh`
+id=`./helper/getID.sh`
 
 case "$id" in
 
