@@ -7,7 +7,7 @@ id=`./helper/getID.sh`
 
 case "$id" in
 
-    opensuse)
+    opensuse|opensuse-tumbleweed)
         zypper up
         ;;
 

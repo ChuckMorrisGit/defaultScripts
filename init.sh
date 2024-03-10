@@ -16,6 +16,7 @@ while getopts i flag
 do
     case "${flag}" in
         i) 
+            apt install curl
             echo "to crontal"
             (crontab -l 2>/dev/null; echo "@reboot bash $SCRIPT_DIR/$SCRIPT_NAME") | crontab -
             ;;
