@@ -17,7 +17,9 @@ case "$id" in
 
     *)
         sudo apt update
-        sudo apt -y upgrade
+
+        sudo apt -y --force-yes upgrade
+
         sudo apt -y autoremove
         ;;
 
