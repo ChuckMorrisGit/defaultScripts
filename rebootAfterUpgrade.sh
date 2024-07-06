@@ -6,4 +6,6 @@ openhab-cli clean-cache
 
 openhab-cli reset-ownership
 
+rm /var/lib/openhab/jsondb/*.marketplace.*
+
 ./reboot.sh
