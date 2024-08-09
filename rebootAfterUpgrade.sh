@@ -2,9 +2,9 @@
 
 systemctl stop openhab.service
 
-openhab-cli clean-cache
+echo y | openhab-cli clean-cache
 
-openhab-cli reset-ownership
+echo y | openhab-cli reset-ownership
 
 rm /var/lib/openhab/jsondb/*.marketplace.*
 
