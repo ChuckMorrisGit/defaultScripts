@@ -18,7 +18,7 @@ do
         i) 
             apt install curl mosquitto-clients python3-paho-mqtt
             echo "to crontal"
-            (crontab -l 2>/dev/null; echo "@reboot bash $SCRIPT_DIR/$SCRIPT_NAME") | crontab -
+            (crontab -l 2>/dev/null; echo "@reboot sleep 5m && bash $SCRIPT_DIR/$SCRIPT_NAME") | crontab -
             ;;
     esac
 done
