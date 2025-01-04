@@ -3,11 +3,5 @@
 BASEDIR=$(dirname $0)
 cd $BASEDIR
 
-
-
-
-
-
-
-
+./heartbeat.py
 
