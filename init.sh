@@ -10,6 +10,7 @@ git stash
 git pull
 
 chmod +x *.sh
+chmod +x *.py
 chmod +x ./helper/*.sh
 
 while getopts i flag

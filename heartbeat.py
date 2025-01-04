@@ -24,12 +24,12 @@ def on_message(client, userdata, msg):
     if payload == "reboot":
         print("Rebooting")
         client.publish(topic_status, "rebooting", retain=True)
-        os.system("./reboot.sh")
+        os.system("./reboot.sh &")
         
     if payload == "shutdown":    
         print("Shutting down")
         client.publish(topic_status, "shutting down", retain=True)
-        os.system("./shutdown.sh")
+        os.system("./shutdown.sh &")
     
     if payload == "status":
         print("Status request")
@@ -42,7 +42,7 @@ def on_message(client, userdata, msg):
     if payload == "update":
         print("Update request")
         client.publish(topic_status, "updating", retain=True)
-        os.system("./upgrade.sh")
+        os.system("./upgrade.sh &")
         
 
 
