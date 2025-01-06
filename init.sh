@@ -25,6 +25,7 @@ do
             rm /root/.screenrc
             echo 'caption always "%{Wb} %H %{Bk}| %{Ck}%-w%50>%{Cb} %n %t %{-}%+w%<%{- Wk}%{Bk} | %=%{Wb} %C "' > /root/.screenrc
             echo 'screen -t Heartbeat 0 sleep 1m && /root/defaultScripts/heartbeat.sh' >> /root/.screenrc
+            echo 'screen -t bash 1 bash' >> /root/.screenrc
             ;;
     esac
 done
