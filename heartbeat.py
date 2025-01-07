@@ -9,7 +9,14 @@ hostname = os.uname()[1]
 mqtt_host="192.168.2.70"
 
 topic_status = "devices/" + hostname + "/status"
+topic_runlevel = "devices/" + hostname + "/runlevel"
+runLevel = ""
 
+def setRunLevel(runlevel):
+    global runLevel
+    
+    runLevel = runlevel
+    client.publish(topic_runlevel, runLevel, retain=True)
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
@@ -24,11 +31,13 @@ def on_message(client, userdata, msg):
     if payload == "reboot":
         print("Rebooting")
         client.publish(topic_status, "rebooting", retain=True)
+        setRunLevel("rebooting")
         os.system("./reboot.sh &")
         
     if payload == "shutdown":    
         print("Shutting down")
         client.publish(topic_status, "shutting down", retain=True)
+        setRunLevel("shutting down")
         os.system("./shutdown.sh &")
     
     if payload == "status":
@@ -42,6 +51,7 @@ def on_message(client, userdata, msg):
     if payload == "update":
         print("Update request")
         client.publish(topic_status, "updating", retain=True)
+        setRunLevel("updating")
         os.system("./upgrade.sh &")
         
 
