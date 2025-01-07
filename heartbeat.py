@@ -23,6 +23,7 @@ def on_connect(client, userdata, flags, rc):
 
     client.subscribe("devices/" + hostname + "/cmd")
     client.publish(topic_status, "online", retain=True)
+    setRunLevel("running")
     
 
 def on_message(client, userdata, msg):
