@@ -40,6 +40,7 @@ def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
 
     client.subscribe("devices/" + hostname + "/cmd")
+    client.subscribe("devices/all/cmd")
     client.publish(topic_status, Status.ONLINE.value, retain=True)
     client.publish(topic_version, VERSION, retain=True)
     setRunLevel(Status.RUNNING.value)
