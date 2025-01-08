@@ -7,7 +7,7 @@ import os
 from enum import Enum
 import sys
 
-VERSION = "1.0.0"
+VERSION = "1.0.01"
 
 hostname = os.uname()[1]
 
