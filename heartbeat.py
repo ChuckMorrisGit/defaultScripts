@@ -6,8 +6,15 @@ import paho.mqtt.client as mqtt
 import os
 from enum import Enum
 import sys
+import subprocess
 
-VERSION = "1.0.02"
+def get_git_version():
+    try:
+        return subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode('utf-8')
+    except Exception as e:
+        return "Unknown"
+    
+VERSION = "1.0.02" + get_git_version()
 
 hostname = os.uname()[1]
 
