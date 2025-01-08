@@ -10,10 +10,11 @@ do
     ./heartbeat.py
     EXITCODE=$?
 
-    bash ./updateFromGit.sh
-
     echo "Heartbeat exited with code $EXITCODE. Restarting in 3 seconds..."
     sleep 3
+
+    bash ./updateFromGit.sh
+
 done
 
 
