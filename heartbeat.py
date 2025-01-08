@@ -8,13 +8,14 @@ from enum import Enum
 import sys
 import subprocess
 
-def get_git_version():
+def get_commit_count():
     try:
-        return subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode('utf-8')
+        count = subprocess.check_output(["git", "rev-list", "--count", "HEAD"]).strip().decode('utf-8')
+        return count
     except Exception as e:
         return "Unknown"
     
-VERSION = "1.0.02" + get_git_version()
+VERSION = "1.0.02" + str(get_commit_count())
 
 hostname = os.uname()[1]
 
