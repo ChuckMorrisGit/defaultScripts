@@ -15,8 +15,9 @@ def get_commit_count():
     except Exception as e:
         return "Unknown"
     
-VERSION = "1.0.02" + str(get_commit_count())
+VERSION = "1.0." + str(get_commit_count())
 
+### MQTT Section ###
 hostname = os.uname()[1]
 
 mqtt_host="192.168.2.70"
@@ -24,7 +25,9 @@ mqtt_host="192.168.2.70"
 topic_status = "devices/" + hostname + "/status"
 topic_runlevel = "devices/" + hostname + "/runlevel"
 topic_version = "devices/" + hostname + "/version"
+
 runLevel = ""
+### END MQTT Section ###
 
 
 class Status(Enum):
