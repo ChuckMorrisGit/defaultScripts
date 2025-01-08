@@ -18,6 +18,7 @@ topic_runlevel = "devices/" + hostname + "/runlevel"
 topic_version = "devices/" + hostname + "/version"
 runLevel = ""
 
+
 class Status(Enum):
     ONLINE = "online"
     OFFLINE = "offline"
@@ -85,6 +86,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--version":
         print_version()
         sys.exit(0)
+        
 
 client = mqtt.Client(client_id="heartbeat_" + hostname)
 client.on_connect = on_connect
