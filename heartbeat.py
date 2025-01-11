@@ -7,6 +7,7 @@ import os
 from enum import Enum
 import sys
 import subprocess
+import argparse
 
 def get_commit_count():
     try:
@@ -16,6 +17,8 @@ def get_commit_count():
         return "Unknown"
     
 VERSION = "1.0." + str(get_commit_count())
+
+verbose = False
 
 ### MQTT Section ###
 hostname = os.uname()[1]
@@ -99,11 +102,26 @@ def print_version():
     print(f"Version: {VERSION}")
 
 
-if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "--version":
-        print_version()
-        sys.exit(0)
-        
+       
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-v", "--verbosity", help="increase output verbosity", action="store_true")
+parser.add_argument("--version", help="show Version", action="store_true")
+parser.add_argument("--set_runlevel", help="Set Runlevel from Extern script", action="store")
+
+args = parser.parse_args()
+if args.verbosity:
+    verbose = True
+
+if args.version:
+    print(f"Version: {VERSION}")
+    sys.exit(0)
+    
+if args.set_runlevel:
+    setRunLevel(args.set_runlevel)
+    sys.exit(0)
+    
 
 client = mqtt.Client(client_id="heartbeat_" + hostname)
 client.on_connect = on_connect
