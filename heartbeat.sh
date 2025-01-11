@@ -5,7 +5,8 @@ cd $BASEDIR
 
 EXITCODE=1
 
-while [ $EXITCODE -ne 0 ]
+#while [ $EXITCODE -ne 0 ]
+while [ true ]
 do
     ./heartbeat.py
     EXITCODE=$?
