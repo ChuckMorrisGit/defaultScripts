@@ -38,6 +38,8 @@ class Status(Enum):
     REBOOTING = "rebooting"
     SHUTTING_DOWN = "shutting down"
     UPDATING = "updating"
+    ERROR = "error"
+    UNKNOWN = "unknown"
 
 
 def setRunLevel(runlevel):
@@ -60,23 +62,26 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     payload = str(msg.payload.decode('ascii'))
     
-    if payload == "reboot":
-        print("Rebooting")
-        client.publish(topic_status, Status.REBOOTING.value, retain=True)
-        setRunLevel(Status.REBOOTING.value)
-        os.system("./reboot.sh &")
+    if runLevel == Status.RUNNING.value:
+        setRunLevel(Status.UNKNOWN.value)
         
-    if payload == "shutdown":    
-        print("Shutting down")
-        client.publish(topic_status, Status.SHUTTING_DOWN.value, retain=True)
-        setRunLevel(Status.SHUTTING_DOWN.value)
-        os.system("./shutdown.sh &")
-    
-    if payload == "update":
-        print("Update request")
-        client.publish(topic_status, Status.UPDATING.value, retain=True)
-        setRunLevel(Status.UPDATING.value)
-        os.system("./upgrade.sh &")
+        if payload == "reboot":
+            print("Rebooting")
+            client.publish(topic_status, Status.REBOOTING.value, retain=True)
+            setRunLevel(Status.REBOOTING.value)
+            os.system("./reboot.sh &")
+            
+        if payload == "shutdown":    
+            print("Shutting down")
+            client.publish(topic_status, Status.SHUTTING_DOWN.value, retain=True)
+            setRunLevel(Status.SHUTTING_DOWN.value)
+            os.system("./shutdown.sh &")
+        
+        if payload == "update":
+            print("Update request")
+            client.publish(topic_status, Status.UPDATING.value, retain=True)
+            setRunLevel(Status.UPDATING.value)
+            os.system("./upgrade.sh &")
 
     if payload == "status":
         print("Status request")
