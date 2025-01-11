@@ -46,10 +46,12 @@ class Status(Enum):
     UNKNOWN = "unknown"
 
 
-def setRunLevel(runlevel):
+def setRunLevel(runlevel_new):
     global runLevel
     
-    runLevel = runlevel
+    runLevel = runlevel_new
+    print_datetime()
+    print(runLevel)
     client.publish(topic_runlevel, runLevel, retain=True)
     
     
