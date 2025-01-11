@@ -140,7 +140,7 @@ if __name__ == "__main__":
         print(f"Version: {VERSION}")
         sys.exit(0)
         
-    if args.set_runlevel != None:
+    if args.set_runlevel:
         setRunLevel(args.set_runlevel)
         sys.exit(0)
         
@@ -151,3 +151,4 @@ if __name__ == "__main__":
         rc = client.loop()
         #print_datetime()
         
+    print("rc: " + str(rc))
