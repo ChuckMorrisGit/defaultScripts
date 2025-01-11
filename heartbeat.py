@@ -102,9 +102,17 @@ def print_version():
     print(f"Version: {VERSION}")
 
 
+
+## MAIN PROGRAM ##
+
+client = mqtt.Client(client_id="heartbeat_" + hostname)
+client.on_connect = on_connect
+client.on_message = on_message
+
+client.will_set(topic_status, "offline", retain=True)
+
+client.connect(mqtt_host, 1883, 60)
        
-
-
 parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbosity", help="increase output verbosity", action="store_true")
 parser.add_argument("--version", help="show Version", action="store_true")
@@ -122,14 +130,6 @@ if args.set_runlevel:
     setRunLevel(args.set_runlevel)
     sys.exit(0)
     
-
-client = mqtt.Client(client_id="heartbeat_" + hostname)
-client.on_connect = on_connect
-client.on_message = on_message
-
-client.will_set(topic_status, "offline", retain=True)
-
-client.connect(mqtt_host, 1883, 60)
 
 rc = 0
 
