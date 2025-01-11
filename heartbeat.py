@@ -134,7 +134,7 @@ if args.set_runlevel:
 rc = 0
 
 while rc == 0:
-
+    print(".", end="")
     rc = client.loop()
     
     
