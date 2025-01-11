@@ -20,6 +20,7 @@ def get_commit_count():
 VERSION = "1.0." + str(get_commit_count())
 
 verbose = False
+client = None
 
 ### MQTT Section ###
 hostname = os.uname()[1]
@@ -119,38 +120,38 @@ def print_version():
 
 
 ## MAIN PROGRAM ##
-if __name__ == "__main__":
-    client = mqtt.Client(client_id="heartbeat_" + hostname)
-    client.on_connect = on_connect
-    client.on_message = on_message
+    
+client = mqtt.Client(client_id="heartbeat_" + hostname)
+client.on_connect = on_connect
+client.on_message = on_message
 
-    client.will_set(topic_status, "offline", retain=True)
+client.will_set(topic_status, "offline", retain=True)
 
-    print_datetime()
-    client.connect(mqtt_host, 1883, 60)
-        
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-v", "--verbosity", help="increase output verbosity", action="store_true")
-    parser.add_argument("--version", help="show Version", action="store_true")
-    parser.add_argument("--set_runlevel", help="Set Runlevel from Extern script", action="store")
+print_datetime()
+client.connect(mqtt_host, 1883, 60)
+    
+parser = argparse.ArgumentParser()
+parser.add_argument("-v", "--verbosity", help="increase output verbosity", action="store_true")
+parser.add_argument("--version", help="show Version", action="store_true")
+parser.add_argument("--set_runlevel", help="Set Runlevel from Extern script", action="store")
 
-    args = parser.parse_args()
-    if args.verbosity:
-        verbose = True
+args = parser.parse_args()
+if args.verbosity:
+    verbose = True
 
-    if args.version:
-        print(f"Version: {VERSION}")
-        sys.exit(0)
-        
-    if args.set_runlevel:
-        setRunLevel(args.set_runlevel)
-        sys.exit(0)
-        
+if args.version:
+    print(f"Version: {VERSION}")
+    sys.exit(0)
+    
+if args.set_runlevel:
+    setRunLevel(args.set_runlevel)
+    sys.exit(0)
+    
 
-    rc = 0
+rc = 0
 
-    while rc == 0:
-        rc = client.loop()
-        #print_datetime()
-        
-    print("rc: " + str(rc))
+while rc == 0:
+    rc = client.loop()
+    #print_datetime()
+    
+print("rc: " + str(rc))
