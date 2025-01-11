@@ -51,6 +51,12 @@ def setRunLevel(runlevel):
     
     runLevel = runlevel
     client.publish(topic_runlevel, runLevel, retain=True)
+    
+    
+def print_datetime():
+    now = datetime.now()
+    current_time = now.strftime("%Y-%m-%d %H:%M:%S")
+    print(f"{current_time}: ", end="")   
 
 
 def on_connect(client, userdata, flags, rc):
@@ -70,32 +76,38 @@ def on_message(client, userdata, msg):
         setRunLevel(Status.UNKNOWN.value)
         
         if payload == "reboot":
+            print_datetime()
             print("Rebooting")
             client.publish(topic_status, Status.REBOOTING.value, retain=True)
             setRunLevel(Status.REBOOTING.value)
             os.system("./reboot.sh &")
             
-        if payload == "shutdown":    
+        if payload == "shutdown":   
+            print_datetime() 
             print("Shutting down")
             client.publish(topic_status, Status.SHUTTING_DOWN.value, retain=True)
             setRunLevel(Status.SHUTTING_DOWN.value)
             os.system("./shutdown.sh &")
         
         if payload == "update":
+            print_datetime()
             print("Update request")
             client.publish(topic_status, Status.UPDATING.value, retain=True)
             setRunLevel(Status.UPDATING.value)
             os.system("./upgrade.sh &")
 
     if payload == "status":
+        print_datetime()
         print("Status request")
         client.publish(topic_status, Status.ONLINE.value, retain=True)
         
     if payload == "ping":
+        print_datetime()
         print("Ping request")
         client.publish(topic_status, Status.ONLINE.value, retain=True)
         
     if payload == "restart_script":
+        print_datetime()
         print("Restart Script")
         sys.exit(1)
         
@@ -142,5 +154,5 @@ if __name__ == "__main__":
 
     while rc == 0:
         rc = client.loop()
-        print_datetime()
+        #print_datetime()
         
