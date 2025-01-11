@@ -114,10 +114,6 @@ def on_message(client, userdata, msg):
 def print_version():
     print(f"Version: {VERSION}")
 
-def print_datetime():
-    now = datetime.now()
-    current_time = now.strftime("%Y-%m-%d %H:%M:%S")
-    print(f"Current Date and Time: {current_time}")
 
 
 ## MAIN PROGRAM ##
