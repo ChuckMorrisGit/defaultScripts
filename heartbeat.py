@@ -125,7 +125,6 @@ if __name__ == "__main__":
     client.will_set(topic_status, "offline", retain=True)
 
     print_datetime()
-
     client.connect(mqtt_host, 1883, 60)
         
     parser = argparse.ArgumentParser()
