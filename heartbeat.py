@@ -45,15 +45,14 @@ def setRunLevel(runlevel_new):
     global runLevel
     
     runLevel = runlevel_new
-    print_datetime()
-    print(runLevel)
+    print_datetime(runLevel)
     client.publish(topic_runlevel, runLevel, retain=True)
     
     
-def print_datetime():
+def print_datetime(additional_text=""):
     now = datetime.now()
     current_time = now.strftime("%Y-%m-%d %H:%M:%S")
-    print(f"{current_time}: ", end="")   
+    print(f"{current_time}: " + additional_text, end="")   
 
 
 def on_connect(client, userdata, flags, rc):
@@ -75,39 +74,33 @@ def on_message(client, userdata, msg):
         setRunLevel(Status.UNKNOWN.value)
         
         if payload == "reboot":
-            print_datetime()
-            print("Rebooting")
+            print_datetime("Rebooting")
             client.publish(topic_status, Status.REBOOTING.value, retain=True)
             setRunLevel(Status.REBOOTING.value)
             os.system("./reboot.sh &")
             
         if payload == "shutdown":   
-            print_datetime() 
-            print("Shutting down")
+            print_datetime("Shutting down")
             client.publish(topic_status, Status.SHUTTING_DOWN.value, retain=True)
             setRunLevel(Status.SHUTTING_DOWN.value)
             os.system("./shutdown.sh &")
         
         if payload == "update":
-            print_datetime()
-            print("Update request")
+            print_datetime("Update request")
             client.publish(topic_status, Status.UPDATING.value, retain=True)
             setRunLevel(Status.UPDATING.value)
             os.system("./upgrade.sh &")
 
     if payload == "status":
-        print_datetime()
-        print("Status request")
+        print_datetime("Status request")
         client.publish(topic_status, Status.ONLINE.value, retain=True)
         
     if payload == "ping":
-        print_datetime()
-        print("Ping request")
+        print_datetime("Ping request")
         client.publish(topic_status, Status.ONLINE.value, retain=True)
         
     if payload == "restart_script":
-        print_datetime()
-        print("Restart Script")
+        print_datetime("Restart Script")
         sys.exit(1)
         
 def print_version():
