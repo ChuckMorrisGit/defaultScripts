@@ -58,6 +58,7 @@ def print_datetime():
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
+    now = datetime.now()
 
     client.subscribe("devices/" + hostname + "/cmd")
     client.subscribe("devices/all/cmd")
