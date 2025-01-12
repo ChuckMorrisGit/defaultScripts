@@ -75,8 +75,25 @@ def on_message(client, userdata, msg):
     
     payload = str(msg.payload.decode('ascii'))
     print_datetime(f"Received message on topic {msg.topic} with payload {payload}")
+
+
+##### Heartbeat Commands #####
+    if payload == "status":
+        print_datetime("Status request")
+        client.publish(topic_status, Status.ONLINE.value, retain=True)
+        return
+        
+    if payload == "ping":
+        print_datetime("Ping request")
+        client.publish(topic_status, Status.ONLINE.value, retain=True)
+        return
+        
+    if payload == "restart_script":
+        print_datetime("Restart Script")
+        print("\n")
+        sys.exit(1)
     
-    
+##### Device Commands #####    
     if runLevel_temp == Status.RUNNING.value:
         print_datetime("Check for reboot/shutdown/update")
 
@@ -101,18 +118,6 @@ def on_message(client, userdata, msg):
             os.system("./upgrade.sh")
             return
 
-    if payload == "status":
-        print_datetime("Status request")
-        client.publish(topic_status, Status.ONLINE.value, retain=True)
-        
-    if payload == "ping":
-        print_datetime("Ping request")
-        client.publish(topic_status, Status.ONLINE.value, retain=True)
-        
-    if payload == "restart_script":
-        print_datetime("Restart Script")
-        print("\n")
-        sys.exit(1)
         
     setRunLevel(runLevel_temp)
         
@@ -169,7 +174,6 @@ client.connect(mqtt_host, 1883, 60)
 if args.set_runlevel:
     setRunLevel(args.set_runlevel)
     sys.exit(0)
-
 
 rc = 0
 
