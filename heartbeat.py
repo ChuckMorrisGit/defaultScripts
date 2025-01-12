@@ -47,8 +47,7 @@ def setRunLevel(runlevel_new):
     runLevel = runlevel_new
     print_datetime(runLevel)
     result = client.publish(topic_runlevel, runLevel, retain=True)
-    result.wait_for_publish()  # Wait until the message is published
-    
+    print_datetime(f"Set Runlevel to {runLevel} with result {result.rc}")    
     
 def print_datetime(additional_text=""):
     now = datetime.now()
