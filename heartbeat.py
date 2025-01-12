@@ -14,6 +14,14 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 
+def run_command(command):   
+    os.system(f"nohup {command} &") 
+    #try:
+    #    result = subprocess.check_output(command, shell=True)
+    #    return result.decode('utf-8')
+    #except Exception as e:
+    #    return "COMMAND"
+
 def get_commit_count():
     try:
         count = subprocess.check_output(["git", "rev-list", "--count", "HEAD"]).strip().decode('utf-8')
@@ -68,7 +76,7 @@ def on_connect(client, userdata, flags, rc):
     client.publish(topic_startuptime, now.strftime("%Y-%m-%d %H:%M:%S"), retain=True)
     setRunLevel(Status.RUNNING.value)
 
-on_message_running = False
+
 def on_message(client, userdata, msg):
     
     payload = str(msg.payload.decode('ascii'))
@@ -94,30 +102,23 @@ def on_message(client, userdata, msg):
 ##### Device Commands #####    
     print_datetime("Check for reboot/shutdown/update")
 
-    global on_message_running
-    if not on_message_running:
-        on_message_running = True
-
-        if payload == "reboot":
-            print_datetime("Rebooting")
-            client.publish(topic_status, Status.REBOOTING.value, retain=True)
-            os.system("./reboot.sh")
-            
-        if payload == "shutdown":   
-            print_datetime("Shutting down")
-            client.publish(topic_status, Status.SHUTTING_DOWN.value, retain=True)
-            os.system("./shutdown.sh")
-            setRunLevel(Status.RUNNING.value)
+    if payload == "reboot":
+        print_datetime("Rebooting")
+        client.publish(topic_status, Status.REBOOTING.value, retain=True)
+        run_command("./reboot.sh")
         
-        if payload == "upgrade":
-            print_datetime("Update request")
-            client.publish(topic_status, Status.UPDATING.value, retain=True)
-            os.system("./upgrade.sh")
+    if payload == "shutdown":   
+        print_datetime("Shutting down")
+        client.publish(topic_status, Status.SHUTTING_DOWN.value, retain=True)
+        run_command("./shutdown.sh")
+    
+    if payload == "upgrade":
+        print_datetime("Update request")
+        client.publish(topic_status, Status.UPDATING.value, retain=True)
+        run_command("./upgrade.sh")
 
-        on_message_running = False
 
     print_datetime("END: Check for command")
-    on_message_running = False
         
         
 def print_version():
