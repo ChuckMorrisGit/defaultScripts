@@ -102,7 +102,7 @@ def on_message(client, userdata, msg):
             print_datetime("Rebooting")
             client.publish(topic_status, Status.REBOOTING.value, retain=True)
             setRunLevel(Status.REBOOTING.value)
-            os.system("./reboot.sh &")
+            os.system("./reboot.sh")
             
         if payload == "shutdown":   
             print_datetime("Shutting down")
@@ -117,7 +117,7 @@ def on_message(client, userdata, msg):
             os.system("./upgrade.sh")
 
         
-    setRunLevel(runLevel_temp)
+    setRunLevel(Status.RUNNING.value)
         
 def print_version():
     print(f"Version: {VERSION}")
