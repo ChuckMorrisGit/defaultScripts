@@ -19,7 +19,7 @@ def get_commit_count():
         count = subprocess.check_output(["git", "rev-list", "--count", "HEAD"]).strip().decode('utf-8')
         return count
     except Exception as e:
-        return "Unknown"
+        return "COMMAND"
     
 VERSION = "1.0." + str(get_commit_count())
 
@@ -38,7 +38,7 @@ class Status(Enum):
     SHUTTING_DOWN = "shutting down"
     UPDATING = "updating"
     ERROR = "error"
-    UNKNOWN = "unknown"
+    COMMAND = "Command running"
 
 
 def setRunLevel(runlevel_new):
@@ -71,15 +71,16 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     runLevel_temp = runLevel
-    setRunLevel(Status.UNKNOWN.value)
+    setRunLevel(Status.COMMAND.value)
+
+    print_datetime(f"Received message on topic {msg.topic} with payload {payload}")
     
     payload = str(msg.payload.decode('ascii'))
     
     
     if runLevel_temp == Status.RUNNING.value:
-        
-        print_datetime(f"Received message on topic {msg.topic} with payload {payload}")
-        
+        print_datetime("Check for reboot/shutdown/update")
+                
         if payload == "reboot":
             print_datetime("Rebooting")
             client.publish(topic_status, Status.REBOOTING.value, retain=True)
