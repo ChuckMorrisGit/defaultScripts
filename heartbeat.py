@@ -111,6 +111,7 @@ def on_message(client, userdata, msg):
         
     if payload == "restart_script":
         print_datetime("Restart Script")
+        print("\n")
         sys.exit(1)
         
     setRunLevel(runLevel_temp)
