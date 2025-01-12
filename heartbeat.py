@@ -70,11 +70,6 @@ def on_connect(client, userdata, flags, rc):
 
 on_message_running = False
 def on_message(client, userdata, msg):
-    print("TEST")
-    global on_message_running
-    while on_message_running:
-        pass
-    on_message_running = True
     
     payload = str(msg.payload.decode('ascii'))
     print_datetime(f"Received message on topic {msg.topic} with payload >{payload}<")
@@ -99,21 +94,27 @@ def on_message(client, userdata, msg):
 ##### Device Commands #####    
     print_datetime("Check for reboot/shutdown/update")
 
-    if payload == "reboot":
-        print_datetime("Rebooting")
-        client.publish(topic_status, Status.REBOOTING.value, retain=True)
-        os.system("./reboot.sh")
+    if not on_message_running:
+        global on_message_running
+        on_message_running = True
+
+        if payload == "reboot":
+            print_datetime("Rebooting")
+            client.publish(topic_status, Status.REBOOTING.value, retain=True)
+            os.system("./reboot.sh")
+            
+        if payload == "shutdown":   
+            print_datetime("Shutting down")
+            client.publish(topic_status, Status.SHUTTING_DOWN.value, retain=True)
+            os.system("./shutdown.sh")
+            setRunLevel(Status.RUNNING.value)
         
-    if payload == "shutdown":   
-        print_datetime("Shutting down")
-        client.publish(topic_status, Status.SHUTTING_DOWN.value, retain=True)
-        os.system("./shutdown.sh")
-        setRunLevel(Status.RUNNING.value)
-    
-    if payload == "upgrade":
-        print_datetime("Update request")
-        client.publish(topic_status, Status.UPDATING.value, retain=True)
-        os.system("./upgrade.sh")
+        if payload == "upgrade":
+            print_datetime("Update request")
+            client.publish(topic_status, Status.UPDATING.value, retain=True)
+            os.system("./upgrade.sh")
+
+        on_message_running = False
 
     print_datetime("END: Check for command")
     on_message_running = False
