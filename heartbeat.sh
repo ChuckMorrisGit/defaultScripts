@@ -11,7 +11,7 @@ do
     bash ./updateFromGit.sh
 
     
-    ./heartbeat.py
+    ./heartbeat.py $@
     EXITCODE=$?
 
     echo "Heartbeat exited with code $EXITCODE. Restarting in 3 seconds..."

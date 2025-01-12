@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-# afutros720_runlevel
 
 import paho.mqtt.client as mqtt
 import os
@@ -9,6 +8,11 @@ import sys
 import subprocess
 import argparse
 from datetime import datetime
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+
 
 def get_commit_count():
     try:
@@ -19,20 +23,10 @@ def get_commit_count():
     
 VERSION = "1.0." + str(get_commit_count())
 
-verbose = False
-client = None
-
-### MQTT Section ###
 hostname = os.uname()[1]
 
-mqtt_host="192.168.2.70"
-
-topic_status = "devices/" + hostname + "/status"
-topic_runlevel = "devices/" + hostname + "/runlevel"
-topic_version = "devices/" + hostname + "/version"
-
-runLevel = ""
-### END MQTT Section ###
+verbose = False
+client = None
 
 
 class Status(Enum):
@@ -119,7 +113,39 @@ def print_version():
 
 
 
-## MAIN PROGRAM ##
+#####   MAIN PROGRAM #####
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-v", "--verbosity", help="increase output verbosity", action="store_true")
+parser.add_argument("--version", help="show Version", action="store_true")
+parser.add_argument("--set_runlevel", help="Set Runlevel from Extern script", action="store")
+parser.add_argument("--mqtt_host", help="MQTT Hostname", action="store")
+parser.add_argument("--mqtt_port", help="MQTT Port", action="store")
+parser.add_argument("--mqtt_user", help="MQTT Username", action="store")
+parser.add_argument("--mqtt_pass", help="MQTT Password", action="store")
+
+args = parser.parse_args()
+if args.verbosity:
+    verbose = True
+
+if args.version:
+    print(f"Version: {VERSION}")
+    sys.exit(0)
+    
+    
+### MQTT Section ###
+mqtt_host = args.mqtt_host if args.mqtt_host else config['MQTT']['host']
+mqtt_port = int(args.mqtt_port) if args.mqtt_port else int(config['MQTT']['port'])
+mqtt_user = args.mqtt_user if args.mqtt_user else config['MQTT']['user']
+mqtt_password = args.mqtt_pass if args.mqtt_pass else config['MQTT']['password']
+
+
+topic_status = "devices/" + hostname + "/status"
+topic_runlevel = "devices/" + hostname + "/runlevel"
+topic_version = "devices/" + hostname + "/version"
+
+runLevel = ""
+### END MQTT Section ###
     
 client = mqtt.Client(client_id="heartbeat_" + hostname)
 client.on_connect = on_connect
@@ -130,23 +156,11 @@ client.will_set(topic_status, "offline", retain=True)
 print_datetime()
 client.connect(mqtt_host, 1883, 60)
     
-parser = argparse.ArgumentParser()
-parser.add_argument("-v", "--verbosity", help="increase output verbosity", action="store_true")
-parser.add_argument("--version", help="show Version", action="store_true")
-parser.add_argument("--set_runlevel", help="Set Runlevel from Extern script", action="store")
 
-args = parser.parse_args()
-if args.verbosity:
-    verbose = True
-
-if args.version:
-    print(f"Version: {VERSION}")
-    sys.exit(0)
-    
 if args.set_runlevel:
     setRunLevel(args.set_runlevel)
     sys.exit(0)
-    
+
 
 rc = 0
 
