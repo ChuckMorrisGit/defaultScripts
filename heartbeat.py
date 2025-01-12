@@ -103,21 +103,18 @@ def on_message(client, userdata, msg):
             client.publish(topic_status, Status.REBOOTING.value, retain=True)
             setRunLevel(Status.REBOOTING.value)
             os.system("./reboot.sh &")
-            return
             
         if payload == "shutdown":   
             print_datetime("Shutting down")
             client.publish(topic_status, Status.SHUTTING_DOWN.value, retain=True)
             setRunLevel(Status.SHUTTING_DOWN.value)
             os.system("./shutdown.sh")
-            return
         
         if payload == "upgrade":
             print_datetime("Update request")
             client.publish(topic_status, Status.UPDATING.value, retain=True)
             setRunLevel(Status.UPDATING.value)
             os.system("./upgrade.sh")
-            return
 
         
     setRunLevel(runLevel_temp)
