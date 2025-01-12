@@ -52,7 +52,9 @@ def setRunLevel(runlevel_new):
 def print_datetime(additional_text=""):
     now = datetime.now()
     current_time = now.strftime("%Y-%m-%d %H:%M:%S")
-    print(f"{current_time}: " + additional_text, end="")   
+    print(f"{current_time}: " + additional_text, end="")
+    if additional_text != "":
+        print()
 
 
 def on_connect(client, userdata, flags, rc):
