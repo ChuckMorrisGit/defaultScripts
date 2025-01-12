@@ -70,30 +70,35 @@ def on_connect(client, userdata, flags, rc):
 
 
 def on_message(client, userdata, msg):
+    runLevel_temp = runLevel
+    setRunLevel(Status.UNKNOWN.value)
+    
     payload = str(msg.payload.decode('ascii'))
     
     print_datetime(runLevel)
     
-    if runLevel == Status.RUNNING:
-        setRunLevel(Status.UNKNOWN.value)
+    if runLevel_temp == Status.RUNNING.value:
         
         if payload == "reboot":
             print_datetime("Rebooting")
             client.publish(topic_status, Status.REBOOTING.value, retain=True)
             setRunLevel(Status.REBOOTING.value)
             os.system("./reboot.sh &")
+            return
             
         if payload == "shutdown":   
             print_datetime("Shutting down")
             client.publish(topic_status, Status.SHUTTING_DOWN.value, retain=True)
             setRunLevel(Status.SHUTTING_DOWN.value)
             os.system("./shutdown.sh &")
+            return
         
         if payload == "update":
             print_datetime("Update request")
             client.publish(topic_status, Status.UPDATING.value, retain=True)
             setRunLevel(Status.UPDATING.value)
             os.system("./upgrade.sh &")
+            return
 
     if payload == "status":
         print_datetime("Status request")
@@ -106,6 +111,8 @@ def on_message(client, userdata, msg):
     if payload == "restart_script":
         print_datetime("Restart Script")
         sys.exit(1)
+        
+    setRunLevel(runLevel_temp)
         
 def print_version():
     print(f"Version: {VERSION}")
