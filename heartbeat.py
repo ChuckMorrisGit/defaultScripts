@@ -111,7 +111,7 @@ def on_message(client, userdata, msg):
             os.system("./shutdown.sh")
             return
         
-        if payload == "update":
+        if payload == "upgrade":
             print_datetime("Update request")
             client.publish(topic_status, Status.UPDATING.value, retain=True)
             setRunLevel(Status.UPDATING.value)
