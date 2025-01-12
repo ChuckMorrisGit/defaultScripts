@@ -72,6 +72,8 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     payload = str(msg.payload.decode('ascii'))
     
+    print_datetime(runLevel)
+    
     if runLevel == Status.RUNNING:
         setRunLevel(Status.UNKNOWN.value)
         
