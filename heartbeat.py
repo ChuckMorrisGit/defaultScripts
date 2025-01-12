@@ -75,9 +75,10 @@ def on_message(client, userdata, msg):
     
     payload = str(msg.payload.decode('ascii'))
     
-    print_datetime(runLevel)
     
     if runLevel_temp == Status.RUNNING.value:
+        
+        print_datetime(f"Received message on topic {msg.topic} with payload {payload}")
         
         if payload == "reboot":
             print_datetime("Rebooting")
