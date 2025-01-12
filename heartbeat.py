@@ -94,8 +94,8 @@ def on_message(client, userdata, msg):
 ##### Device Commands #####    
     print_datetime("Check for reboot/shutdown/update")
 
+    global on_message_running
     if not on_message_running:
-        global on_message_running
         on_message_running = True
 
         if payload == "reboot":
