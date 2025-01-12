@@ -63,6 +63,7 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("devices/all/cmd")
     client.publish(topic_status, Status.ONLINE.value, retain=True)
     client.publish(topic_version, VERSION, retain=True)
+    client.publish(topic_startuptime, now.strftime("%Y-%m-%d %H:%M:%S"), retain=True)
     setRunLevel(Status.RUNNING.value)
 
 
@@ -143,6 +144,7 @@ mqtt_password = args.mqtt_pass if args.mqtt_pass else config['MQTT']['password']
 topic_status = "devices/" + hostname + "/status"
 topic_runlevel = "devices/" + hostname + "/runlevel"
 topic_version = "devices/" + hostname + "/version"
+topic_startuptime = "devices/" + hostname + "/startuptime"
 
 runLevel = ""
 ### END MQTT Section ###
