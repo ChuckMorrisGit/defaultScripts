@@ -72,10 +72,9 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     runLevel_temp = runLevel
     setRunLevel(Status.COMMAND.value)
-
-    print_datetime(f"Received message on topic {msg.topic} with payload {payload}")
     
     payload = str(msg.payload.decode('ascii'))
+    print_datetime(f"Received message on topic {msg.topic} with payload {payload}")
     
     
     if runLevel_temp == Status.RUNNING.value:
