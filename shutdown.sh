@@ -5,8 +5,5 @@ cd $BASEDIR
 
 ./upgrade.sh
 
-
-./heartbeat.sh --set_runlevel "init 0"
-
 init 0
 
