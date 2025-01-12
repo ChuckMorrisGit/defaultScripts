@@ -79,7 +79,7 @@ def on_message(client, userdata, msg):
     
     if runLevel_temp == Status.RUNNING.value:
         print_datetime("Check for reboot/shutdown/update")
-                
+
         if payload == "reboot":
             print_datetime("Rebooting")
             client.publish(topic_status, Status.REBOOTING.value, retain=True)
