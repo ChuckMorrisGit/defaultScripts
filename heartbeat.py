@@ -91,14 +91,14 @@ def on_message(client, userdata, msg):
             print_datetime("Shutting down")
             client.publish(topic_status, Status.SHUTTING_DOWN.value, retain=True)
             setRunLevel(Status.SHUTTING_DOWN.value)
-            os.system("./shutdown.sh &")
+            os.system("./shutdown.sh")
             return
         
         if payload == "update":
             print_datetime("Update request")
             client.publish(topic_status, Status.UPDATING.value, retain=True)
             setRunLevel(Status.UPDATING.value)
-            os.system("./upgrade.sh &")
+            os.system("./upgrade.sh")
             return
 
     if payload == "status":
