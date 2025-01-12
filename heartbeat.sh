@@ -8,9 +8,11 @@ EXITCODE=1
 #while [ $EXITCODE -ne 0 ]
 while [ true ]
 do
+    echo "Updating from git..."
     bash ./updateFromGit.sh
 
-    
+    echo 
+    echo "Starting heartbeat..."
     ./heartbeat.py $@
     EXITCODE=$?
 
