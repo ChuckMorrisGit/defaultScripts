@@ -70,6 +70,7 @@ def on_connect(client, userdata, flags, rc):
 
 on_message_running = False
 def on_message(client, userdata, msg):
+    print("TEST")
     global on_message_running
     while on_message_running:
         pass
@@ -101,25 +102,20 @@ def on_message(client, userdata, msg):
     if payload == "reboot":
         print_datetime("Rebooting")
         client.publish(topic_status, Status.REBOOTING.value, retain=True)
-        setRunLevel(Status.REBOOTING.value)
         os.system("./reboot.sh")
-        setRunLevel(Status.RUNNING.value)
         
     if payload == "shutdown":   
         print_datetime("Shutting down")
         client.publish(topic_status, Status.SHUTTING_DOWN.value, retain=True)
-        setRunLevel(Status.SHUTTING_DOWN.value)
         os.system("./shutdown.sh")
         setRunLevel(Status.RUNNING.value)
     
     if payload == "upgrade":
         print_datetime("Update request")
         client.publish(topic_status, Status.UPDATING.value, retain=True)
-        setRunLevel(Status.UPDATING.value)
         os.system("./upgrade.sh")
-        setRunLevel(Status.RUNNING.value)
 
-
+    print_datetime("END: Check for command")
     on_message_running = False
         
         
