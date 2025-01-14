@@ -9,6 +9,7 @@ import subprocess
 import argparse
 from datetime import datetime
 import configparser
+from plyer import notification #for getting notification on your PC
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -49,6 +50,21 @@ class Status(Enum):
     COMMAND = "Command running"
 
 
+def DesktopNotification(message):
+    notification.notify(
+        #title of the notification,
+        title = "ServerDownloader",
+        #the body of the notification
+        message = message,  
+        #creating icon for the notification
+        #we need to download a icon of ico file format
+        app_icon = script_root + "downloader-arrow-icon.png",
+        # the notification stays for 50sec
+        timeout  = 3
+    )
+
+
+
 def setRunLevel(runlevel_new):
     global runLevel
     
@@ -82,6 +98,7 @@ def on_message(client, userdata, msg):
     payload = str(msg.payload.decode('ascii'))
     print_datetime(f"Received message on topic {msg.topic} with payload >{payload}<")
 
+    DesktopNotification(f"Received message on topic {msg.topic} with payload >{payload}<")
 
 ##### Heartbeat Commands #####
     if payload == "status":

@@ -14,7 +14,7 @@ while getopts i flag
 do
     case "${flag}" in
         i) 
-            apt install curl mosquitto-clients python3-paho-mqtt
+            apt install curl mosquitto-clients python3-paho-mqtt python3-plyer
             echo "to crontal"
             (crontab -l 2>/dev/null; echo "@reboot sleep 5m && bash $SCRIPT_DIR/$SCRIPT_NAME") | crontab -
             (crontab -l 2>/dev/null; echo "@reboot bash /usr/bin/screen -dmS Default") | crontab -
