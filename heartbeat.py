@@ -58,7 +58,7 @@ def DesktopNotification(message):
         message = message,  
         #creating icon for the notification
         #we need to download a icon of ico file format
-        app_icon = script_root + "downloader-arrow-icon.png",
+        #app_icon = script_root + "downloader-arrow-icon.png",
         # the notification stays for 50sec
         timeout  = 3
     )
