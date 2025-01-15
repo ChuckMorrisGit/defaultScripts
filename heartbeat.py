@@ -9,7 +9,6 @@ import subprocess
 import argparse
 from datetime import datetime
 import configparser
-from plyer import notification #for getting notification on your PC
 
 config = configparser.ConfigParser()
 config.read('config.ini')
