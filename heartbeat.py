@@ -48,7 +48,12 @@ class Status(Enum):
     ERROR = "error"
     COMMAND = "Command running"
 
-
+def getIpAddress():
+    try:
+        ip = subprocess.check_output(["hostname", "-I"]).strip().decode('utf-8')
+        return ip
+    except Exception as e:
+        return "COMMAND"
 
 def setRunLevel(runlevel_new):
     global runLevel
@@ -75,6 +80,7 @@ def on_connect(client, userdata, flags, rc):
     client.publish(topic_status, Status.ONLINE.value, retain=True)
     client.publish(topic_version, VERSION, retain=True)
     client.publish(topic_startuptime, now.strftime("%Y-%m-%d %H:%M:%S"), retain=True)
+    client.publish(topic_network, str(getIpAddress()), retain=True)
     setRunLevel(Status.RUNNING.value)
 
 
@@ -88,6 +94,7 @@ def on_message(client, userdata, msg):
     if payload == "status":
         print_datetime("Status request")
         client.publish(topic_status, Status.ONLINE.value, retain=True)
+        client.publish(topic_network, str(getIpAddress()), retain=True)
         return
         
     if payload == "ping":
@@ -158,6 +165,7 @@ topic_status = "devices/" + hostname + "/status"
 topic_runlevel = "devices/" + hostname + "/runlevel"
 topic_version = "devices/" + hostname + "/version"
 topic_startuptime = "devices/" + hostname + "/startuptime"
+topic_network = "devices/" + hostname + "/network"
 
 runLevel = ""
 ### END MQTT Section ###
