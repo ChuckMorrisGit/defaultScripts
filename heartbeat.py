@@ -54,6 +54,13 @@ def getIpAddress():
         return ip
     except Exception as e:
         return "COMMAND"
+    
+def getLoad():
+    try:
+        load = subprocess.check_output(["uptime"]).strip().decode('utf-8')
+        return load
+    except Exception as e:
+        return "COMMAND"
 
 def setRunLevel(runlevel_new):
     global runLevel
@@ -81,6 +88,7 @@ def on_connect(client, userdata, flags, rc):
     client.publish(topic_version, VERSION, retain=True)
     client.publish(topic_startuptime, now.strftime("%Y-%m-%d %H:%M:%S"), retain=True)
     client.publish(topic_network, str(getIpAddress()), retain=True)
+    client.publish(topic_load, str(getLoad()), retain=True)
     setRunLevel(Status.RUNNING.value)
 
 
@@ -95,11 +103,13 @@ def on_message(client, userdata, msg):
         print_datetime("Status request")
         client.publish(topic_status, Status.ONLINE.value, retain=True)
         client.publish(topic_network, str(getIpAddress()), retain=True)
+        client.publish(topic_load, str(getLoad()), retain=True)
         return
         
     if payload == "ping":
         print_datetime("Ping request")
         client.publish(topic_status, Status.ONLINE.value, retain=True)
+        client.publish(topic_load, str(getLoad()), retain=True)
         return
         
     if payload == "restart_script":
@@ -166,6 +176,7 @@ topic_runlevel = "devices/" + hostname + "/runlevel"
 topic_version = "devices/" + hostname + "/version"
 topic_startuptime = "devices/" + hostname + "/startuptime"
 topic_network = "devices/" + hostname + "/network"
+topic_load = "devices/" + hostname + "/load"
 
 runLevel = ""
 ### END MQTT Section ###
