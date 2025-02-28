@@ -3,7 +3,7 @@
 BASEDIR=$(dirname $0)
 cd $BASEDIR
 
-./upgrade.sh
+#./upgrade.sh
 
 init 0
 
