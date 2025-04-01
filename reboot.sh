@@ -6,4 +6,4 @@ cd $BASEDIR
 
 ./upgrade.sh
 
-reboot
+/sbin/reboot
