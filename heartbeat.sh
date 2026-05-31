@@ -9,7 +9,7 @@ EXITCODE=1
 while [ true ]
 do
     echo "Updating from git..."
-    bash ./updateFromGit.sh
+    #bash ./updateFromGit.sh
 
     echo 
     echo "Starting heartbeat..."
